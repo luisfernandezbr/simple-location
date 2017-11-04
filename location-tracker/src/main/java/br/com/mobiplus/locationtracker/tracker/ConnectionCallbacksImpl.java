@@ -58,7 +58,7 @@ public class ConnectionCallbacksImpl implements GoogleApiClient.ConnectionCallba
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-        Log.d(TAG, "onConnectionSuspended(): ");
+    public void onConnectionSuspended(int cause) {
+        Log.w(TAG, "onConnectionSuspended(): ");
     }
 }

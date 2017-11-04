@@ -35,7 +35,6 @@ public class LocationTracker {
     private GoogleApiClient googleApiClient;
 
 
-
 //    public void handleLocationSettings() {
 //        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
 //        LocationSettingsRequest.Builder locationRequestBuilder = builder.addLocationRequest(this.getLocationRequest());
@@ -45,7 +44,6 @@ public class LocationTracker {
 //    }
 
 
-
     private void stopToReceivingLocationUpdates() {
         if (googleApiClient != null) {
             FusedLocationApi.removeLocationUpdates(googleApiClient, locationListener);
@@ -53,13 +51,12 @@ public class LocationTracker {
     }
 
 
-
     public void init() {
         connectionCallbacks = new ConnectionCallbacksImpl(context, locationListener);
         onConnectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
             @Override
             public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                Log.d(TAG, "onConnectionFailed(): ");
+                Log.e(TAG, "onConnectionFailed(): ");
             }
         };
 

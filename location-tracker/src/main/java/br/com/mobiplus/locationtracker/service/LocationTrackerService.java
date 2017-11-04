@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.location.Location;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import br.com.mobiplus.locationtracker.tracker.LocationTracker;
 
@@ -25,6 +24,7 @@ public class LocationTrackerService extends Service {
     /**
      * Intent Action to register: br.com.mobiplus.locationtracker.tracker.LocationTracker.ACTION_ON_LOCATION_UPDATE
      * Extra to get Location: br.com.mobiplus.locationtracker.tracker.LocationTracker.EXTRA_LOCATION
+     *
      * @param context
      * @param broadcastReceiver
      */
