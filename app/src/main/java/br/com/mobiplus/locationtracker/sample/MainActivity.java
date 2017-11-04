@@ -20,6 +20,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import br.com.mobiplus.locationtracker.LocationHandler;
 import br.com.mobiplus.locationtracker.LocationTrackerService;
 
 public class MainActivity extends AppCompatActivity implements PermissionListener{
@@ -59,10 +60,10 @@ public class MainActivity extends AppCompatActivity implements PermissionListene
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Location location = intent.getParcelableExtra(LocationTrackerService.EXTRA_LOCATION);
+                Location location = intent.getParcelableExtra(LocationHandler.EXTRA_LOCATION);
                 Log.d(TAG, "onReceive: " + location.toString());
             }
-        }, new IntentFilter(LocationTrackerService.ACTION_ON_LOCATION_UPDATE));
+        }, new IntentFilter(LocationHandler.ACTION_ON_LOCATION_UPDATE));
 
         startService(new Intent(this, LocationTrackerService.class));
     }
