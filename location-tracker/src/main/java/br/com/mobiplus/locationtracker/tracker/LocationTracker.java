@@ -1,15 +1,22 @@
 package br.com.mobiplus.locationtracker.tracker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
 
 import static com.google.android.gms.location.LocationServices.FusedLocationApi;
+
 
 /**
  * Created by luisfernandez on 04/11/17.
@@ -35,13 +42,14 @@ public class LocationTracker {
     private GoogleApiClient googleApiClient;
 
 
-//    public void handleLocationSettings() {
-//        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-//        LocationSettingsRequest.Builder locationRequestBuilder = builder.addLocationRequest(this.getLocationRequest());
-//
-//        //noinspection deprecation
-//        PendingResult<LocationSettingsResult> result = SettingsApi.checkLocationSettings(googleApiClient, locationRequestBuilder.build());
-//    }
+
+
+    private LocationRequest loadLocationRequest() {
+        return new RequestLocation.Builder()
+                .setInterval(10000)
+                .setRequestPriority(RequestPriority.PRIORITY_HIGH_ACCURACY)
+                .build();
+    }
 
 
     private void stopToReceivingLocationUpdates() {
@@ -60,17 +68,28 @@ public class LocationTracker {
             }
         };
 
-        googleApiClient = new GoogleApiClient.Builder(this.context)
+        googleApiClient = this.getGoogleApiClient();
+
+        connectionCallbacks.setGoogleApiClient(googleApiClient);
+
+
+        googleApiClient.connect();
+    }
+
+    @NonNull
+    private GoogleApiClient getGoogleApiClient() {
+        return new GoogleApiClient.Builder(this.context)
                 .addConnectionCallbacks(connectionCallbacks)
                 .addOnConnectionFailedListener(onConnectionFailedListener)
                 .addApi(LocationServices.API)
                 .build();
-
-        connectionCallbacks.setGoogleApiClient(googleApiClient);
-        googleApiClient.connect();
     }
 
     public void stop() {
         this.stopToReceivingLocationUpdates();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
     }
 }
