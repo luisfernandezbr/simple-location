@@ -9,9 +9,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 
-import br.com.mobiplus.locationtracker.ConnectionCallbacksImpl;
-import br.com.mobiplus.locationtracker.LocationListenerImpl;
-
 import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 
 /**

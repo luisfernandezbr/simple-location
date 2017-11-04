@@ -1,4 +1,4 @@
-package br.com.mobiplus.locationtracker;
+package br.com.mobiplus.locationtracker.tracker;
 
 import android.content.Context;
 import android.content.pm.PackageManager;

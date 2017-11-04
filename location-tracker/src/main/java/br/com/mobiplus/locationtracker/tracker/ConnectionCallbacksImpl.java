@@ -1,4 +1,4 @@
-package br.com.mobiplus.locationtracker;
+package br.com.mobiplus.locationtracker.tracker;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

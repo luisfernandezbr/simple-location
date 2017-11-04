@@ -1,4 +1,4 @@
-package br.com.mobiplus.locationtracker;
+package br.com.mobiplus.locationtracker.tracker;
 
 /**
  * Created by luisfernandez on 04/11/17.

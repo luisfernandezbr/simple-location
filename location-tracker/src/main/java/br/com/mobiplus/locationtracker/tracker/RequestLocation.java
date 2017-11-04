@@ -1,4 +1,4 @@
-package br.com.mobiplus.locationtracker;
+package br.com.mobiplus.locationtracker.tracker;
 
 
 import static com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY;
@@ -18,12 +18,6 @@ public class RequestLocation {
         private long fastestInterval;
 
         public Builder() {
-        }
-
-        private Builder(long interval, RequestPriority requestPriority, long fastestInterval) {
-            this.interval = interval;
-            this.requestPriority = requestPriority;
-            this.fastestInterval = fastestInterval;
         }
 
         public Builder setInterval(long interval) {
