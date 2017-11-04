@@ -1,5 +1,6 @@
 package br.com.mobiplus.locationtracker.sample;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,9 +13,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
+
 import br.com.mobiplus.locationtracker.LocationTrackerService;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PermissionListener{
 
     private static final String TAG = "MainActivity";
 
@@ -23,6 +31,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.handleLocationPermission();
+    }
+
+    private void handleLocationPermission() {
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(this).check();
+    }
+
+    @Override
+    public void onPermissionGranted(PermissionGrantedResponse response) {
+        startToListeningLocations();
+    }
+
+    @Override
+    public void onPermissionDenied(PermissionDeniedResponse response) {
+        Log.d(TAG, "onPermissionDenied: " + response.toString());
+    }
+
+    @Override
+    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+        Log.d(TAG, "onPermissionRationaleShouldBeShown: " + permission.toString());
+    }
+
+    private void startToListeningLocations() {
         LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -32,6 +65,5 @@ public class MainActivity extends AppCompatActivity {
         }, new IntentFilter(LocationTrackerService.ACTION_ON_LOCATION_UPDATE));
 
         startService(new Intent(this, LocationTrackerService.class));
-
     }
 }
