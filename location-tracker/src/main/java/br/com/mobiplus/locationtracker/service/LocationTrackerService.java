@@ -1,8 +1,10 @@
-package br.com.mobiplus.locationtracker;
+package br.com.mobiplus.locationtracker.service;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+
+import br.com.mobiplus.locationtracker.LocationHandler;
 
 import static com.google.android.gms.location.LocationServices.FusedLocationApi;
 

@@ -8,7 +8,7 @@
     <application>
 
         <service
-            android:name=".LocationTrackerService"
+            android:name=".service.LocationTrackerService"
             android:enabled="true"
             android:exported="true"/>
 
