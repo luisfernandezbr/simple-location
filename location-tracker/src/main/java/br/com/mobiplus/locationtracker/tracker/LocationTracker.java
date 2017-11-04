@@ -1,38 +1,28 @@
-package br.com.mobiplus.locationtracker;
+package br.com.mobiplus.locationtracker.tracker;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.location.Location;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
+
+import br.com.mobiplus.locationtracker.ConnectionCallbacksImpl;
+import br.com.mobiplus.locationtracker.LocationListenerImpl;
 
 import static com.google.android.gms.location.LocationServices.FusedLocationApi;
-import static com.google.android.gms.location.LocationServices.SettingsApi;
 
 /**
  * Created by luisfernandez on 04/11/17.
  */
-
-public class LocationHandler {
+public class LocationTracker {
 
     public static final String ACTION_ON_LOCATION_UPDATE = "br.com.mobiplus.locationtracker.ACTION_ON_LOCATION_UPDATE";
     public static final String EXTRA_LOCATION = "br.com.mobiplus.locationtracker.EXTRA_LOCATION";
 
-    private static final String TAG = "LocationHandler";
+    private static final String TAG = "LocationTracker";
 
     private Context context;
 
@@ -40,7 +30,7 @@ public class LocationHandler {
     private ConnectionCallbacksImpl connectionCallbacks;
     private LocationListener locationListener;
 
-    public LocationHandler(Context context) {
+    public LocationTracker(Context context) {
         this.context = context;
         this.locationListener = new LocationListenerImpl(context);
     }

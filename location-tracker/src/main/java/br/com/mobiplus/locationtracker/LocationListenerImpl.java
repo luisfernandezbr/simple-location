@@ -7,8 +7,8 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.android.gms.location.LocationListener;
 
-import static br.com.mobiplus.locationtracker.LocationHandler.ACTION_ON_LOCATION_UPDATE;
-import static br.com.mobiplus.locationtracker.LocationHandler.EXTRA_LOCATION;
+import static br.com.mobiplus.locationtracker.tracker.LocationTracker.ACTION_ON_LOCATION_UPDATE;
+import static br.com.mobiplus.locationtracker.tracker.LocationTracker.EXTRA_LOCATION;
 
 /**
  * Created by luisfernandez on 04/11/17.

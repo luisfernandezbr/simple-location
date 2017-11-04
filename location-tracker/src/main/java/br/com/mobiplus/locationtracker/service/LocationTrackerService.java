@@ -4,13 +4,11 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import br.com.mobiplus.locationtracker.LocationHandler;
-
-import static com.google.android.gms.location.LocationServices.FusedLocationApi;
+import br.com.mobiplus.locationtracker.tracker.LocationTracker;
 
 public class LocationTrackerService extends Service {
 
-    private LocationHandler locationHandler;
+    private LocationTracker locationTracker;
 
     public LocationTrackerService() {
 
@@ -29,16 +27,16 @@ public class LocationTrackerService extends Service {
     }
 
     private void initLocationHandler() {
-        if (locationHandler == null) {
-            locationHandler = new LocationHandler(this);
+        if (locationTracker == null) {
+            locationTracker = new LocationTracker(this);
         }
 
-        locationHandler.init();
+        locationTracker.init();
     }
 
     @Override
     public void onDestroy() {
-        locationHandler.stop();
+        locationTracker.stop();
 
         super.onDestroy();
     }
