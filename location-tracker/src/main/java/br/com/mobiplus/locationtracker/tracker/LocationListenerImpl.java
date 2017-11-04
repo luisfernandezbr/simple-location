@@ -16,7 +16,7 @@ import static br.com.mobiplus.locationtracker.tracker.LocationTracker.EXTRA_LOCA
 
 public class LocationListenerImpl implements LocationListener {
 
-    Context context;
+    private Context context;
 
     public LocationListenerImpl(Context context) {
         this.context = context;
@@ -24,6 +24,10 @@ public class LocationListenerImpl implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        this.sendOnLocationUpdateBroadcast(location);
+    }
+
+    private void sendOnLocationUpdateBroadcast(Location location) {
         Intent intent = new Intent(ACTION_ON_LOCATION_UPDATE);
         intent.putExtra(EXTRA_LOCATION, location);
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);

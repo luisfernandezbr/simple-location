@@ -16,10 +16,10 @@ import static com.google.android.gms.location.LocationServices.FusedLocationApi;
  */
 public class LocationTracker {
 
+    private static final String TAG = "LocationTracker";
+
     public static final String ACTION_ON_LOCATION_UPDATE = "br.com.mobiplus.locationtracker.ACTION_ON_LOCATION_UPDATE";
     public static final String EXTRA_LOCATION = "br.com.mobiplus.locationtracker.EXTRA_LOCATION";
-
-    private static final String TAG = "LocationTracker";
 
     private Context context;
 

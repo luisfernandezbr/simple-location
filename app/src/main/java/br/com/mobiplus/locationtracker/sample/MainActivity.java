@@ -55,14 +55,11 @@ public class MainActivity extends AppCompatActivity implements PermissionListene
     }
 
     private void startToListeningLocations() {
-        LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
+        LocationTrackerService.startAndRegister(this, new LocationTrackerService.OnLocationUpdateListener() {
             @Override
-            public void onReceive(Context context, Intent intent) {
-                Location location = intent.getParcelableExtra(LocationTracker.EXTRA_LOCATION);
+            public void onLocationUpdated(Location location) {
                 Log.d(TAG, "onReceive: " + location.toString());
             }
-        }, new IntentFilter(LocationTracker.ACTION_ON_LOCATION_UPDATE));
-
-        startService(new Intent(this, LocationTrackerService.class));
+        });
     }
 }
