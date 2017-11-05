@@ -33,17 +33,15 @@ public class ConnectionCallbacksImpl implements GoogleApiClient.ConnectionCallba
 
     private static final String TAG = "ConnectionCallbacksImpl";
 
+    public static final int REQUEST_CODE_INTERNAL = 2938;
+
     private Context context;
     private GoogleApiClient googleApiClient;
     private LocationListener locationListener;
 
-    public ConnectionCallbacksImpl(Context context, LocationListener locationListener) {
+    ConnectionCallbacksImpl(Context context, LocationListener locationListener) {
         this.context = context;
         this.locationListener = locationListener;
-    }
-
-    public void setGoogleApiClient(GoogleApiClient googleApiClient) {
-        this.googleApiClient = googleApiClient;
     }
 
     @Override
@@ -51,7 +49,33 @@ public class ConnectionCallbacksImpl implements GoogleApiClient.ConnectionCallba
         handleLocationSettings();
     }
 
-    public void handleLocationSettings() {
+    @Override
+    public void onConnectionSuspended(int cause) {
+        Log.w(TAG, "onConnectionSuspended(): ");
+    }
+
+    void setGoogleApiClient(GoogleApiClient googleApiClient) {
+        this.googleApiClient = googleApiClient;
+    }
+
+    @SuppressLint("MissingPermission")
+    void handleOnConnected() {
+        Log.d(TAG, "handleOnConnected(): ");
+        LocationRequest request = this.loadLocationRequest();
+
+        boolean permissionsGranted = this.isPermissionGranted();
+
+        if (permissionsGranted) {
+            //noinspection deprecation
+            FusedLocationApi.requestLocationUpdates(googleApiClient, request, locationListener);
+        } else {
+            Intent intent = new Intent(LocationTracker.ACTION_ON_PERMISSION_REQUIRED);
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            Log.w(TAG, "Permission not granted!");
+        }
+    }
+
+    private void handleLocationSettings() {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(this.loadLocationRequest());
 
         //noinspection deprecation
@@ -59,45 +83,55 @@ public class ConnectionCallbacksImpl implements GoogleApiClient.ConnectionCallba
         result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
             @Override
             public void onResult(@NonNull LocationSettingsResult locationSettingsResult) {
-                Log.d(TAG, "onResult(): ");
+                Log.d(TAG, "LocationServices.ResultCallback.onResult(): ");
 
                 Status status = locationSettingsResult.getStatus();
-                int statusCode = status.getStatusCode();
-
-                if (LocationSettingsStatusCodes.SUCCESS == statusCode) {
-                    handleOnConnected();
-                } else {
-                    if (context instanceof Activity) {
-                        try {
-                            status.startResolutionForResult((Activity) context, 1000);
-                        } catch (IntentSender.SendIntentException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        // Show Notifitication with pendingIntent to Open
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS: {
+                        // All location settings are satisfied. The client can
+                        // initialize location requests here.
+                        handleOnResultSuccess();
+                        break;
                     }
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED: {
+                        handleOnResolutionRequired(status);
+                        break;
+                    }
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE: {
+                        // Location settings are not satisfied. However, we have no way
+                        // to fix the settings so we won't show the dialog.
+                    }
+                    default: {
+                        Log.e(TAG, "Location Setting not satisfied and is not possible to handle using Resolution Dialog!");
+                    }
+                }
+            }
 
+            private void handleOnResultSuccess() {
+                handleOnConnected();
+            }
+
+            private void handleOnResolutionRequired(final Status status) {
+                if (context instanceof Activity) {
+                    try {
+                        status.startResolutionForResult((Activity) context, REQUEST_CODE_INTERNAL);
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // Show Notifitication with pendingIntent to Open
                 }
             }
         });
     }
 
-    @SuppressLint("MissingPermission")
-    private void handleOnConnected() {
-        Log.d(TAG, "onConnected(): ");
-        LocationRequest request = this.loadLocationRequest();
-
+    private boolean isPermissionGranted() {
         PermissionHandler permissionHandler = new PermissionHandler();
-
-        boolean permissionsGranted = permissionHandler.arePermissionsGranted(context, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);
-
-        if (permissionsGranted) {
-            //noinspection deprecation
-            FusedLocationApi.requestLocationUpdates(googleApiClient, request, locationListener);
-        } else {
-            // TODO define the best way to handle this
-            Log.w(TAG, "Permission not granted!");
-        }
+        return permissionHandler.arePermissionsGranted(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        );
     }
 
     private LocationRequest loadLocationRequest() {
@@ -105,10 +139,5 @@ public class ConnectionCallbacksImpl implements GoogleApiClient.ConnectionCallba
                 .setInterval(10000)
                 .setRequestPriority(RequestPriority.PRIORITY_HIGH_ACCURACY)
                 .build();
-    }
-
-    @Override
-    public void onConnectionSuspended(int cause) {
-        Log.w(TAG, "onConnectionSuspended(): ");
     }
 }
