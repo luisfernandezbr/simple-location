@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.google.android.gms.location.LocationListener;
 
@@ -16,6 +17,8 @@ import static br.com.mobiplus.locationtracker.tracker.LocationTracker.EXTRA_LOCA
 
 public class LocationListenerImpl implements LocationListener {
 
+    private static final String TAG = "LocationListenerImpl";
+
     private Context context;
 
     public LocationListenerImpl(Context context) {
@@ -24,6 +27,7 @@ public class LocationListenerImpl implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.d(TAG, "onLocationChanged: " + location.toString());
         this.sendOnLocationUpdateBroadcast(location);
     }
 
