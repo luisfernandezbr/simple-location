@@ -2,6 +2,8 @@ package br.com.mobiplus.locationtracker.sample;
 
 import android.os.Bundle;
 
+import com.google.android.gms.location.LocationRequest;
+
 import br.com.mobiplus.locationtracker.service.LocationTrackerService;
 
 public class LocationByServiceActivity extends BaseLocationActivity {
@@ -18,6 +20,11 @@ public class LocationByServiceActivity extends BaseLocationActivity {
 
     @Override
     public void startToListeningLocations() {
-        LocationTrackerService.start(this);
+        LocationRequest request = new LocationRequest();
+        request.setInterval(30000);
+        request.setFastestInterval(30000);
+        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationTrackerService.start(this, request);
     }
 }

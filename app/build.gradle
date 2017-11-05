@@ -32,6 +32,7 @@ configurations.all {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:$support_version"
+    implementation "com.google.android.gms:play-services-location:$play_services_version"
     implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
 
     implementation 'com.karumi:dexter:4.2.0'
