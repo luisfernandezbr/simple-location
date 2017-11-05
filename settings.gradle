@@ -1,1 +1,1 @@
-include ':app', ':location-tracker'
+include ':app', ':simple-location-library'

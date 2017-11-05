@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="br.com.mobiplus.locationtracker.sample">
+    package="br.com.mobiplus.simplelocation.sample">
 
     <application
         android:allowBackup="true"
@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LocationDirectlyFromActivity">
+        <activity android:name="br.com.mobiplus.simplelocation.sample.LocationDirectlyFromActivity">
         </activity>
-        <activity android:name=".LocationByServiceActivity" >
+        <activity android:name="br.com.mobiplus.simplelocation.sample.LocationByServiceActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
