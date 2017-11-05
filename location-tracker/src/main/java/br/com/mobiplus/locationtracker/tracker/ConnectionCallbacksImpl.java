@@ -38,10 +38,17 @@ public class ConnectionCallbacksImpl implements GoogleApiClient.ConnectionCallba
     private Context context;
     private GoogleApiClient googleApiClient;
     private LocationListener locationListener;
+    private LocationRequest locationRequest;
 
     ConnectionCallbacksImpl(Context context, LocationListener locationListener) {
         this.context = context;
         this.locationListener = locationListener;
+    }
+
+    public ConnectionCallbacksImpl(Context context, LocationListener locationListener, LocationRequest locationRequest) {
+        this.context = context;
+        this.locationListener = locationListener;
+        this.locationRequest = locationRequest;
     }
 
     @Override
@@ -135,9 +142,15 @@ public class ConnectionCallbacksImpl implements GoogleApiClient.ConnectionCallba
     }
 
     private LocationRequest loadLocationRequest() {
-        return new RequestLocation.Builder()
-                .setInterval(10000)
-                .setRequestPriority(RequestPriority.PRIORITY_HIGH_ACCURACY)
-                .build();
+        if (locationRequest == null) {
+            locationRequest = new RequestLocation.Builder()
+                    .setInterval(10000)
+                    .setRequestPriority(RequestPriority.PRIORITY_HIGH_ACCURACY)
+                    .build();
+        }
+
+        Log.d(TAG, "loadLocationRequest(): " + locationRequest.toString());
+
+        return locationRequest;
     }
 }

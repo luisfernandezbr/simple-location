@@ -58,6 +58,15 @@ public class LocationTracker {
 
     public void init() {
         connectionCallbacks = new ConnectionCallbacksImpl(context, locationListener);
+        this.initDependencies();
+    }
+
+    public void init(LocationRequest locationRequest) {
+        connectionCallbacks = new ConnectionCallbacksImpl(context, locationListener, locationRequest);
+        this.initDependencies();
+    }
+
+    private void initDependencies() {
         onConnectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
             @Override
             public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
